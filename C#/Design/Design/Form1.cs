@@ -13,10 +13,12 @@ using System.IO.Ports;
 using System.Threading;
 using System.Net;
 using System.Net.Sockets;
-
+using Design;
 
 namespace eHealth
 {
+    
+
     public partial class Form1 : Form
     {
         SerialPort com;
@@ -33,14 +35,14 @@ namespace eHealth
         bool isLocated = false;
 
         int mapflag = 0;
-
+        BardCodeHooK BarCode = new BardCodeHooK();
         private System.Timers.Timer timer = new System.Timers.Timer();
 
         public Form1()
         {
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
-
+            BarCode.BarCodeEvent += new BardCodeHooK.BardCodeDeletegate(BarCode_BarCodeEvent);
             com = new SerialPort();
             isConnect = false;
             
@@ -76,6 +78,29 @@ namespace eHealth
 
 
         }
+        private delegate void ShowInfoDelegate(BardCodeHooK.BarCodes barCode);
+        private void ShowInfo(BardCodeHooK.BarCodes barCode)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new ShowInfoDelegate(ShowInfo), new object[] { barCode });
+            }
+            else
+            {
+                /*textBox1.Text = barCode.KeyName;
+                textBox2.Text = barCode.VirtKey.ToString();
+                textBox3.Text = barCode.ScanCode.ToString();
+                textBox4.Text = barCode.Ascll.ToString();
+                textBox5.Text = barCode.Chr.ToString();
+                textBox6.Text = barCode.IsValid ? barCode.BarCode : "";//是否为扫描枪输入，如果为true则是 否则为键盘输入
+                textBox7.Text += barCode.KeyName;*/
+
+                MessageBox.Show(barCode.IsValid.ToString());
+
+                //Console.WriteLine(text);
+            }
+        }
+
         private void OnDataRecivice(object sender ,SerialDataReceivedEventArgs e) {
             byte[] readBuffer = new byte[com.ReadBufferSize];
             com.Read(readBuffer, 0, readBuffer.Length);
@@ -338,6 +363,21 @@ namespace eHealth
             HttpPost();
             System.Threading.Thread.Sleep(1000000);
             System.Threading.Thread.Sleep(1000000);
+        }
+
+        void BarCode_BarCodeEvent(BardCodeHooK.BarCodes barCode)
+        {
+            ShowInfo(barCode);
+        }
+
+        private void FrmMain_Load(object sender, EventArgs e)
+        {
+            BarCode.Start();
+        }
+
+        private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            BarCode.Stop();
         }
 
 
