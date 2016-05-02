@@ -14,3 +14,13 @@ F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csprojRes
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\eHealth.Form1.resources
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.Properties.Resources.resources
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csproj.GenerateResource.Cache
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.exe
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.pdb
+D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe
+D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.pdb
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csprojResolveAssemblyReference.cache
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\eHealth.Form1.resources
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.Properties.Resources.resources
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csproj.GenerateResource.Cache
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.AboutBox1.resources
+D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.BardCodeMessageBox.resources

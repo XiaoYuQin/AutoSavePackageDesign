@@ -17,14 +17,12 @@ using Design;
 
 namespace eHealth
 {
-    
+
 
     public partial class Form1 : Form
     {
         SerialPort com;
         bool isConnect;
-       // delegate void HandleInterfaceUpdateDelegate(string text);  //委托，此为重点
-       // HandleInterfaceUpdateDelegate interfaceUpdateHandle;
         Thread _readThread;
         bool _keepReading;
 
@@ -35,21 +33,29 @@ namespace eHealth
         bool isLocated = false;
 
         int mapflag = 0;
-        BardCodeHooK BarCode = new BardCodeHooK();
+        //BardCodeHooK BarCode = new BardCodeHooK();
         private System.Timers.Timer timer = new System.Timers.Timer();
+
+        Locker locker1 = new Locker();
+        Locker locker2 = new Locker();
+        Locker locker3 = new Locker();
+
+
+        private void debug(String str)
+        {
+            Console.WriteLine(str);
+        }
+
 
         public Form1()
         {
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
-            BarCode.BarCodeEvent += new BardCodeHooK.BardCodeDeletegate(BarCode_BarCodeEvent);
+            //BarCode.BarCodeEvent += new BardCodeHooK.BardCodeDeletegate(BarCode_BarCodeEvent);
             com = new SerialPort();
             isConnect = false;
             
-            //AT+ST=1
-            //AT+BT=123
-            //AT+LO=1234
-            //AT+LA=123
+
 
             timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
             timer.Enabled = true;
@@ -68,15 +74,14 @@ namespace eHealth
                 System.Console.WriteLine(s);
                 serialBox.Items.Add(s);
             }
-            serialBox.SelectedIndex = 0;
+            //serialBox.SelectedIndex = 0;
             button1.Text = "closed";
-           // interfaceUpdateHandle = new HandleInterfaceUpdateDelegate(UpdateTextBox);  //实例化委托对象
-            //this.com.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.OnDataRecivice);
-            com.ReceivedBytesThreshold = 1;
+            //com.ReceivedBytesThreshold = 0;
 
-    
-
-
+            /***************************设置所有锁列表为第一个********************************/
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
         }
         private delegate void ShowInfoDelegate(BardCodeHooK.BarCodes barCode);
         private void ShowInfo(BardCodeHooK.BarCodes barCode)
@@ -112,6 +117,7 @@ namespace eHealth
             {
                 try
                 {
+                    if (serialBox.Text == "" || serialBox.Text == null) return;
                     com.BaudRate = 9600;
                     Console.WriteLine(serialBox.Text);
                     com.PortName = serialBox.Text;
@@ -162,9 +168,9 @@ namespace eHealth
                         Console.WriteLine(SerialIn);
 
                         String sssss = SerialIn;
-                        textBox1.Text = textBox1.Text + sssss + "\n\r";
-                        textBox1.SelectionStart = textBox1.Text.Length - 1;
-                        textBox1.ScrollToCaret();
+                        //textBox1.Text = textBox1.Text + sssss + "\n\r";
+                        //textBox1.SelectionStart = textBox1.Text.Length - 1;
+                        //textBox1.ScrollToCaret();
                         //sssss = "AT+BT=60\r\n";
                         if (sssss.IndexOf("AT+ST=") == 0)
                         {
@@ -172,7 +178,7 @@ namespace eHealth
                             int j = sssss.IndexOf("\r\n");
                             string strx = sssss.Substring(i, j - i + 2);
                             Console.WriteLine("ST = " + strx);
-                            label8.Text = strx;
+                           // label8.Text = strx;
                         }
                         else if (sssss.IndexOf("AT+LO=") == 0)
                         {
@@ -180,18 +186,18 @@ namespace eHealth
                             int j = sssss.IndexOf('\n');
                             string strx = sssss.Substring(i, sssss.Length - 6);
                             Console.WriteLine("LO = " + strx);
-                            label6.Text = strx;
+                            //label6.Text = strx;
                             longitude = strx;
                             if (strx == "0")
                             {
-                                label5.Text = "no locate";
-                                this.label5.ForeColor = Color.Red;
+                                //label5.Text = "no locate";
+                                //this.label5.ForeColor = Color.Red;
                                 isLocated = false;
                             }
                             else
                             {
-                                label5.Text = "located";
-                                this.label5.ForeColor = Color.Green;
+                                //label5.Text = "located";
+                               // this.label5.ForeColor = Color.Green;
                                 isLocated = true;
                             }
                         }
@@ -203,7 +209,7 @@ namespace eHealth
                             Console.WriteLine("LA = " + strx);
 
    
-                            label7.Text = "-"+strx;
+                            //label7.Text = "-"+strx;
                             latitudeX = strx;
 
 
@@ -234,7 +240,7 @@ namespace eHealth
                                     int btInt = Int32.Parse(strx);
                                      //if (btInt < 150)
                                     {
-                                        label10.Text = strx;
+                                        //label10.Text = strx;
                                         value = strx;
                                         Console.WriteLine(btInt);
                                        // HttpPost();
@@ -261,89 +267,7 @@ namespace eHealth
                 }
             } 
         }
-        
 
-
-
-
-       /* private void button2_Click(object sender, EventArgs e)
-        {
-            //AT+ST=1
-            //AT+BT=123
-            //AT+LO=1234
-            //AT+LA=123
-            com.WriteLine("1234");
-            Console.WriteLine("1234");
-        }*/
-
-        private void HttpPost()
-        {
-          
-            try
-            {
-                int btInt = Int32.Parse(value);
-                if (btInt == 0) return;
-            }
-            catch (System.FormatException)
-            {
-                Console.WriteLine("conver error");
-                return;
-            }
-            
-
-
-            String server = "ge2-6061.cloud.thingworx.com";
-
-            String ss;
-            ss = "POST /Thingworx/Things/eHealth/Services/eHealthService?appKey=d2560f02-2622-4a8a-a3fc-e806a8a99f7c&method=post&x-thingworx-session=true&heartBeat=";
-            ss += value;//hrvData;
-            ss += "&";
-            ss += "longitude";
-            ss += "=";
-            ss += longitude;//gpsData.longitude;
-            ss += "&";
-            ss += "latitude";
-            ss += "=";
-            ss += "-";
-            ss += latitudeX;//gpsData.latitude;
-            ss += " HTTP/1.1\r\n";
-            ss += "Host: ge2-4022.cloud.thingworx.com\r\n";
-            ss += "Content-Type: text/html\r\n";
-            ss += "\r\n";
-
-
-
-            Console.WriteLine(ss);
-            try
-            {
-                TcpClient tcpClient = new TcpClient();
-                tcpClient.Connect(server, 80);
-
-                NetworkStream ns = tcpClient.GetStream();
-
-
-                if (ns.CanWrite)
-                {
-                    Byte[] sendBytes = Encoding.UTF8.GetBytes(ss);
-                    ns.Write(sendBytes, 0, sendBytes.Length);
-                }
-                else
-                {
-                    MessageBox.Show("不能写入数据流", "终止", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    //Console.WriteLine("You cannot write data to this stream.");
-                    tcpClient.Close();
-
-                    // Closing the tcpClient instance does not close the network stream.
-                    ns.Close();
-                    return;
-                }
-                ns.Close();
-                tcpClient.Close();
-            }
-            catch (SocketException) { }
-
-
-        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -360,7 +284,6 @@ namespace eHealth
         {
             //模拟的做一些耗时的操作
             Console.WriteLine("1234");
-            HttpPost();
             System.Threading.Thread.Sleep(1000000);
             System.Threading.Thread.Sleep(1000000);
         }
@@ -372,13 +295,74 @@ namespace eHealth
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            BarCode.Start();
+           // BarCode.Start();
         }
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            BarCode.Stop();
+          //  BarCode.Stop();
         }
+
+ 
+        /*************************************锁密码控制****************************************/
+        /*
+         设置密码按钮
+         */
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (textBox2.Text != "" && textBox2.Text != null)
+            {
+                int lockerNumber = comboBox1.SelectedIndex;
+                debug("锁为" + lockerNumber + "  设置的密码为：" + textBox2.Text);
+                switch (lockerNumber)
+                { 
+                    case 0:
+                        locker1.setPassword(textBox2.Text);
+                        break;
+                    case 1:
+                        locker2.setPassword(textBox2.Text);
+                        break;
+                    case 2:
+                        locker3.setPassword(textBox2.Text);
+                        break;
+                }
+                MessageBox.Show("锁号为：" + (lockerNumber+1)+"号锁" + "\n密码为：" + textBox2.Text,"设置锁密码成功");
+                textBox2.Text = "";
+            }
+        }
+
+        /*
+         读取所有锁的密码
+         */
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("1号锁" + "  密码为：" + locker1.getPassword()
+                + "\n2号锁" + "  密码为：" + locker2.getPassword()
+                + "\n3号锁" + "  密码为：" + locker3.getPassword(), "读所有锁");
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            locker1.cleanPassword();
+            locker2.cleanPassword();
+            locker3.cleanPassword();
+            MessageBox.Show("所有密码成功清除", "清除锁密码");
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Random rad = new Random();//实例化随机数产生器rad；
+            int value1 = rad.Next(100000, 1000000);//用rad生成大于等于1000，小于等于9999的随机数；
+            int value2 = rad.Next(100000, 1000000);//用rad生成大于等于1000，小于等于9999的随机数；
+            debug("value1 " + value1);
+            debug("value2 " + value2);
+            ulong bardcode = (ulong)value1 * 1000000 + (ulong)value2;
+            debug("bardcode = " + bardcode);
+            BardCodeMessageBox box = new BardCodeMessageBox();
+            box.ShowDialog();
+        }
+
+
 
 
     }
