@@ -1,0 +1,11 @@
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\bin\Debug\eHealth.exe
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\bin\Debug\eHealth.pdb
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\obj\x86\Debug\eHealth.Properties.Resources.resources
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\obj\x86\Debug\GenerateResource.read.1.tlog
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\obj\x86\Debug\GenerateResource.write.1.tlog
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\obj\x86\Debug\eHealth.exe
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\obj\x86\Debug\eHealth.pdb
+c:\documents and settings\administrator\my documents\visual studio 2010\Projects\eHealth\eHealth\obj\x86\Debug\eHealth.Form1.resources
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\eHealth.exe
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\eHealth.pdb

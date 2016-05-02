@@ -1,0 +1,16 @@
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\bin\Debug\Design.exe
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\bin\Debug\Design.pdb
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.csprojResolveAssemblyReference.cache
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\eHealth.Form1.resources
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.Properties.Resources.resources
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.csproj.GenerateResource.Cache
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.exe
+F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.pdb
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.exe
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.pdb
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.pdb
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csprojResolveAssemblyReference.cache
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\eHealth.Form1.resources
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.Properties.Resources.resources
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csproj.GenerateResource.Cache
