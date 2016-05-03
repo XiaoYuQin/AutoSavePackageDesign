@@ -81,6 +81,7 @@ namespace eHealth
             /***************************设置所有锁列表为第一个********************************/
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
         }
         private delegate void ShowInfoDelegate(BardCodeHooK.BarCodes barCode);
@@ -358,7 +359,24 @@ namespace eHealth
             debug("value2 " + value2);
             ulong bardcode = (ulong)value1 * 1000000 + (ulong)value2;
             debug("bardcode = " + bardcode);
+            
+            int lockerNumber = comboBox3.SelectedIndex;
+            debug("锁为" + lockerNumber + "  设置的条形码为：" + bardcode);
+            switch (lockerNumber)
+            {
+                case 0:
+                    locker1.setBardCode(bardcode);
+                    break;
+                case 1:
+                    locker2.setBardCode(bardcode);
+                    break;
+                case 2:
+                    locker3.setBardCode(bardcode);
+                    break;
+            }
+
             BardCodeMessageBox box = new BardCodeMessageBox();
+            box.setBardCode(bardcode);
             box.ShowDialog();
         }
 
