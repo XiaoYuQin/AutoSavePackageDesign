@@ -51,6 +51,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -65,10 +66,16 @@
             this.label9 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.button11 = new System.Windows.Forms.Button();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // serialBox
@@ -77,17 +84,17 @@
             this.serialBox.FormattingEnabled = true;
             this.serialBox.Location = new System.Drawing.Point(74, 9);
             this.serialBox.Name = "serialBox";
-            this.serialBox.Size = new System.Drawing.Size(75, 34);
+            this.serialBox.Size = new System.Drawing.Size(98, 34);
             this.serialBox.TabIndex = 0;
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(155, 9);
+            this.button1.Location = new System.Drawing.Point(178, 8);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(86, 35);
             this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
+            this.button1.Text = "打开";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -250,6 +257,7 @@
             this.button4.TabIndex = 25;
             this.button4.Text = "开锁";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox3
             // 
@@ -324,6 +332,20 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "红外扫码";
             // 
+            // comboBox4
+            // 
+            this.comboBox4.DisplayMember = "1";
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "1号柜",
+            "2号柜",
+            "3号柜"});
+            this.comboBox4.Location = new System.Drawing.Point(375, 90);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(81, 34);
+            this.comboBox4.TabIndex = 42;
+            this.comboBox4.ValueMember = "0";
+            // 
             // comboBox3
             // 
             this.comboBox3.DisplayMember = "1";
@@ -390,6 +412,7 @@
             this.button9.TabIndex = 34;
             this.button9.Text = "清空条码";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // button10
             // 
@@ -399,6 +422,7 @@
             this.button10.TabIndex = 33;
             this.button10.Text = "显示条码";
             this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button7
             // 
@@ -448,6 +472,9 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Transparent;
+            this.tabPage3.Controls.Add(this.label15);
+            this.tabPage3.Controls.Add(this.comboBox5);
+            this.tabPage3.Controls.Add(this.button11);
             this.tabPage3.Location = new System.Drawing.Point(4, 35);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -455,19 +482,65 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "读卡器";
             // 
-            // comboBox4
+            // label15
             // 
-            this.comboBox4.DisplayMember = "1";
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
-            "1号柜",
-            "2号柜",
-            "3号柜"});
-            this.comboBox4.Location = new System.Drawing.Point(375, 90);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(81, 34);
-            this.comboBox4.TabIndex = 42;
-            this.comboBox4.ValueMember = "0";
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label15.Location = new System.Drawing.Point(178, 45);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(50, 26);
+            this.label15.TabIndex = 22;
+            this.label15.Text = "端口";
+            // 
+            // button11
+            // 
+            this.button11.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button11.Location = new System.Drawing.Point(331, 40);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(86, 35);
+            this.button11.TabIndex = 21;
+            this.button11.Text = "打开";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(234, 41);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(91, 34);
+            this.comboBox5.TabIndex = 20;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label16.Location = new System.Drawing.Point(18, 389);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(43, 26);
+            this.label16.TabIndex = 20;
+            this.label16.Text = "锁1";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label17.Location = new System.Drawing.Point(87, 389);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(43, 26);
+            this.label17.TabIndex = 21;
+            this.label17.Text = "锁2";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label18.Location = new System.Drawing.Point(160, 389);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(43, 26);
+            this.label18.TabIndex = 22;
+            this.label18.Text = "锁3";
             // 
             // Form1
             // 
@@ -475,6 +548,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 431);
             this.ControlBox = false;
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label1);
@@ -489,6 +565,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -533,6 +611,12 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
     }
 }
 

@@ -14,6 +14,14 @@ namespace Design
             set
         };
 
+        public enum LockerStatus
+        { 
+            LOCK,
+            UNLOCL
+        }
+        private LockerStatus lockerStatus = LockerStatus.LOCK;
+
+
         private String password = null;
         private Status passwordStatus = Status.unset;
         private ulong bardCode = 0;
@@ -54,7 +62,14 @@ namespace Design
         {
             return this.rfid;
         }
-
+        public LockerStatus getLockerStatus()
+        {
+            return this.lockerStatus;
+        }
+        public void setLockerStatus(LockerStatus status)
+        {         
+            this.lockerStatus = status;
+        }
 
 
 

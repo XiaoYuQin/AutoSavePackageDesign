@@ -30,3 +30,4 @@ F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe.config
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.dll
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.pdb
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.xml
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.ShowAllBardCodeWindows.resources

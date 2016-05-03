@@ -73,9 +73,15 @@ namespace eHealth
             {
                 System.Console.WriteLine(s);
                 serialBox.Items.Add(s);
+                comboBox5.Items.Add(s);
+            }
+            if (str.Length != 0)
+            {
+                serialBox.SelectedIndex = 0;
+                comboBox5.SelectedIndex = 0;
             }
             //serialBox.SelectedIndex = 0;
-            button1.Text = "closed";
+            button1.Text = "未打开";
             //com.ReceivedBytesThreshold = 0;
 
             /***************************设置所有锁列表为第一个********************************/
@@ -83,6 +89,7 @@ namespace eHealth
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
+            
         }
         private delegate void ShowInfoDelegate(BardCodeHooK.BarCodes barCode);
         private void ShowInfo(BardCodeHooK.BarCodes barCode)
@@ -128,21 +135,27 @@ namespace eHealth
                     _keepReading = true;
                     _readThread = new Thread(ReadPort);
                     _readThread.Start();
-                    button1.Text = "opened";
+                    button1.Text = "已打开";
                 }
                 catch (System.IO.IOException) {
-                    button1.Text = "closed";
+                    button1.Text = "未打开";
                     isConnect = false;
                     MessageBox.Show("SerialPort Open FAIL", "ERROR");                
                 }
                 catch (System.NullReferenceException){
-                    button1.Text = "closed";
+                    button1.Text = "未打开";
                     isConnect = false;
                     MessageBox.Show("Open SerialPort", "SerialPort FAIL");
                 }
             }
-            else { 
-                
+            else {
+                if (isConnect == true)
+                {
+                    _keepReading = false;
+                    com.Close();
+                    isConnect = false;
+                    button1.Text = "未打开";
+                }
             }
         }
 
@@ -316,7 +329,7 @@ namespace eHealth
                 int lockerNumber = comboBox1.SelectedIndex;
                 debug("锁为" + lockerNumber + "  设置的密码为：" + textBox2.Text);
                 switch (lockerNumber)
-                { 
+                {
                     case 0:
                         locker1.setPassword(textBox2.Text);
                         break;
@@ -327,8 +340,12 @@ namespace eHealth
                         locker3.setPassword(textBox2.Text);
                         break;
                 }
-                MessageBox.Show("锁号为：" + (lockerNumber+1)+"号锁" + "\n密码为：" + textBox2.Text,"设置锁密码成功");
+                MessageBox.Show("锁号为：" + (lockerNumber + 1) + "号锁" + "\n密码为：" + textBox2.Text, "设置锁密码成功");
                 textBox2.Text = "";
+            }
+            else 
+            {
+                MessageBox.Show("密码不能为空","密码设置错误");
             }
         }
 
@@ -337,9 +354,19 @@ namespace eHealth
          */
         private void button5_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("1号锁" + "  密码为：" + locker1.getPassword()
-                + "\n2号锁" + "  密码为：" + locker2.getPassword()
-                + "\n3号锁" + "  密码为：" + locker3.getPassword(), "读所有锁");
+            String p1 = locker1.getPassword();
+            String p2 = locker2.getPassword();
+            String p3 = locker3.getPassword();
+
+            if (p1 != "" || p1!= null)  p1 = "未设密码";
+            if (p2 != "" || p2!= null)  p2 = "未设密码";
+            if (p3 != "" || p3 != null) p3 = "未设密码";
+
+            String msg = "1号锁" + "  密码为：" + p1
+                + "\n2号锁" + "  密码为：" + p2
+                + "\n3号锁" + "  密码为：" + p3;
+
+            MessageBox.Show(msg, "读所有锁");
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -349,7 +376,76 @@ namespace eHealth
             locker3.cleanPassword();
             MessageBox.Show("所有密码成功清除", "清除锁密码");
         }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            int lockerNumber = comboBox2.SelectedIndex;
+            String password = textBox3.Text;
+            debug("锁为" + lockerNumber + "  设置的密码为：" + textBox3.Text);
+            if (isConnect == false)
+            {
+                MessageBox.Show("串口未和单片机连接", "错误");
+                return;
+            }
 
+
+            if (textBox3.Text != "" || textBox3.Text != null)
+            {
+                switch (lockerNumber)
+                {
+                    case 0:
+                        if (locker1.getPassword() == null || locker1.getPassword() == "")
+                        {
+                            MessageBox.Show("锁1没有密码", "错误");
+                            return;
+                        }
+                        if (password == locker1.getPassword())
+                        {
+                            MessageBox.Show("密码正确", "正确");
+                            debug("锁1密码正确");
+                            com.WriteLine("TOLOCK");
+                        }
+                        else
+                        {
+                            MessageBox.Show("密码错误", "错误");
+                        }
+                    break;
+                    case 1:
+                        if (locker2.getPassword() == null || locker2.getPassword() == "")
+                        {
+                            MessageBox.Show("锁2没有密码", "错误");
+                            return;
+                        }
+                        if (password == locker1.getPassword())
+                        {
+                            MessageBox.Show("密码正确", "正确");
+                            debug("锁2密码正确");
+                        }
+                        else
+                        {
+                            MessageBox.Show("密码错误", "错误");
+                        }
+                    break;
+                    case 2:
+                        if (locker3.getPassword() == null || locker3.getPassword() == "")
+                        {
+                            MessageBox.Show("锁3没有密码", "错误");
+                            return;
+                        }
+                        if (password == locker1.getPassword())
+                        {
+                            MessageBox.Show("密码正确", "正确");
+                            debug("锁3密码正确");
+                        }
+                        else
+                        {
+                            MessageBox.Show("密码错误", "错误");
+                        }
+                    break;
+                }
+            }            
+        }
+
+        /*************************************锁条码控制****************************************/
         private void button8_Click(object sender, EventArgs e)
         {
             Random rad = new Random();//实例化随机数产生器rad；
@@ -379,6 +475,38 @@ namespace eHealth
             box.setBardCode(bardcode);
             box.ShowDialog();
         }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            ShowAllBardCodeWindows w = new ShowAllBardCodeWindows();
+            if (locker1.getBardCode() != 0)
+            {                
+                w.setLocker1(locker1.getBardCode());                
+            }
+            if (locker2.getBardCode() != 0)
+            {
+                w.setLocker2(locker2.getBardCode());                
+            }
+            if (locker3.getBardCode() != 0)
+            {
+                w.setLocker3(locker3.getBardCode());
+            }
+            w.Show();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            locker1.setBardCode(0);
+            locker2.setBardCode(0);
+            locker3.setBardCode(0);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
 
 
 
