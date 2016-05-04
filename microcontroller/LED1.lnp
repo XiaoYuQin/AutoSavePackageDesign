@@ -1,0 +1,8 @@
+"main.obj",
+"uart.obj",
+"timer.obj",
+"user_sys.obj",
+"business.obj",
+"phy.obj" 
+TO "LED1" 
+RAMSIZE(256) 

@@ -1,0 +1,85 @@
+C51 COMPILER V9.00   PHY                                                                   04/24/2016 01:25:51 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE PHY
+OBJECT MODULE PLACED IN phy.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE phy.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "reg52.h"
+   2          #include <string.h>
+   3          #include <stdarg.h>
+   4          #include <stdio.h>
+   5          
+   6          
+   7          #include "phy.h"
+   8          
+   9          uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  10          sbit P2_0 = P2^0;
+  11          sbit P2_1 = P2^1;
+  12          sbit P2_2 = P2^2;
+  13          sbit P2_3 = P2^3;
+  14          
+  15          typedef enum
+  16          {
+  17                  SEGMENT_DISPLAYER_1_ON,
+  18                  SEGMENT_DISPLAYER_2_ON,
+  19                  SEGMENT_DISPLAYER_3_ON,
+  20                  SEGMENT_DISPLAYER_4_ON
+  21                  
+  22          }SEGMENT_DISPLAYER;
+  23          
+  24          
+  25          SEGMENT_DISPLAYER segmentDisplaysIndex = SEGMENT_DISPLAYER_1_ON;
+  26          void dealSegmentDisplays()
+  27          {
+  28   1              switch(segmentDisplaysIndex)
+  29   1              {
+  30   2                      case SEGMENT_DISPLAYER_1_ON:
+  31   2                              P2_3 = 1;
+  32   2                              P0=table[0];
+  33   2                              P2_0 = 0;
+  34   2                              segmentDisplaysIndex = SEGMENT_DISPLAYER_2_ON;
+  35   2                      break;
+  36   2                      case SEGMENT_DISPLAYER_2_ON:
+  37   2                              P2_0 = 1;
+  38   2                              P0=table[1];
+  39   2                              P2_1 = 0;
+  40   2                              segmentDisplaysIndex = SEGMENT_DISPLAYER_3_ON;
+  41   2                      break;
+  42   2                      case SEGMENT_DISPLAYER_3_ON:
+  43   2                              P2_1 = 1;
+  44   2                              P0=table[2];
+  45   2                              P2_2 = 0;
+  46   2                              segmentDisplaysIndex = SEGMENT_DISPLAYER_4_ON;
+  47   2                      break;
+  48   2                      case SEGMENT_DISPLAYER_4_ON:
+  49   2                              P2_2 = 1;
+  50   2                              P0=table[3];
+  51   2                              P2_3 = 0;
+  52   2                              segmentDisplaysIndex = SEGMENT_DISPLAYER_1_ON;
+  53   2                      break;          
+  54   2      
+  55   2              }
+C51 COMPILER V9.00   PHY                                                                   04/24/2016 01:25:51 PAGE 2   
+
+  56   1              setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
+  57   1      
+  58   1      }
+  59          
+  60          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     91    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
