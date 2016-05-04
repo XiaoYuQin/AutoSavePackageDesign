@@ -1,2 +1,7 @@
----- EVENT_LIST Matches (1 in 1 files) ----
-User_sys.h:}EVENT_LIST;
+---- P1 Matches (7 in 4 files) ----
+Business.c:sbit lockerPin=P1^7;	//定义位选
+LED1.c:*【程序实现】： P1^7口灯亮								                      								                      
+Main.c:sbit lockerPin=P1^7;	//定义位选
+Main.c:	//LED1  = 0; //置P1_7口为低电平 ,点亮LED
+Timer.c://sbit LED1=P1^7;//声明端口
+Timer.c:	P1 = ~P1;

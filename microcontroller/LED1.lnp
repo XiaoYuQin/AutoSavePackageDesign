@@ -3,6 +3,7 @@
 "timer.obj",
 "user_sys.obj",
 "business.obj",
-"phy.obj" 
+"1602.obj",
+"DHT11.obj" 
 TO "LED1" 
 RAMSIZE(256) 

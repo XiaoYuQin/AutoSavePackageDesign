@@ -10,12 +10,31 @@
 
 extern app_Event getApp;
 
-extern uint8 uartData[20];
+extern uint8 uartData[15];
 extern uint8 uartIndex;
 
+#if 0
+uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+sbit P2_0 = P2^0;
+sbit P2_1 = P2^1;
+sbit P2_2 = P2^2;
+sbit P2_3 = P2^3;
+#endif
 
 //uint8 code table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};//不带小数点的共阴数码管段值
 //uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+
+uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+sbit P2_0 = P2^0;
+sbit P2_1 = P2^1;
+sbit P2_2 = P2^2;
+sbit P2_3 = P2^3;
+
+
+
+
+SEGMENT_DISPLAYER segmentDisplaysIndex = SEGMENT_DISPLAYER_1_ON;
+
 sbit lockerPin=P1^7;	//定义位选
 
 int timer;
@@ -51,7 +70,7 @@ void userBusinessEventHandle()
 				{
 					lockerStatus = UNLOCK;
 					reportLockerStatus();
-					uartSendStr("UNLOCK\r\n");
+					//uartSendStr("UNLOCK\r\n");
 				}
 				break;
 				case EVENT_LOCKER_STATUS_RSP:
@@ -89,7 +108,42 @@ void userBusinessEventHandle()
 
 					break;
 				case EVENT_SEGMENT_DISPLAYER:
-					dealSegmentDisplays();
+				{
+					switch(segmentDisplaysIndex)
+					{
+						case SEGMENT_DISPLAYER_1_ON:
+							P2_3 = 1;
+							P0=table[0];
+							P2_0 = 0;
+							segmentDisplaysIndex = SEGMENT_DISPLAYER_2_ON;
+						break;
+
+						case SEGMENT_DISPLAYER_2_ON:
+							P2_0 = 1;
+							P0=table[1];
+							P2_1 = 0;
+							segmentDisplaysIndex = SEGMENT_DISPLAYER_3_ON;
+						break;
+						case SEGMENT_DISPLAYER_3_ON:
+							P2_1 = 1;
+							P0=table[2];
+							P2_2 = 0;
+							segmentDisplaysIndex = SEGMENT_DISPLAYER_4_ON;
+						break;
+						case SEGMENT_DISPLAYER_4_ON:
+							P2_2 = 1;
+							P0=table[3];
+							P2_3 = 0;
+							segmentDisplaysIndex = SEGMENT_DISPLAYER_1_ON;
+						break;		
+					}
+					setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
+				}
+					//uartSendStr("EVENT_SEGMENT_DISPLAYER\r\n");
+					/*P0=table[i];
+					P2_0 = 0;*/
+					//dealSegmentDisplays();
+					//setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
 					break;
 				default:
 					break;
@@ -131,11 +185,11 @@ void reportLockerStatus()
 	if(lockerStatus == UNLOCK)
 	{
 		lockerPin = 1;
-		uartSendStr("unlock\r\n");
+		//uartSendStr("unlock\r\n");
 	}
 	else
 	{
 		lockerPin = 0;
-		uartSendStr("lock\r\n");
+		//uartSendStr("lock\r\n");
 	}
 }

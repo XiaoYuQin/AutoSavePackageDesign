@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   TIMER                                                                 04/24/2016 01:25:51 PAGE 1   
+C51 COMPILER V9.00   TIMER                                                                 05/05/2016 01:06:09 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIMER
@@ -21,8 +21,8 @@ line level    source
   12          void Init_Timer0(void)            //定时器初始化子程序
   13          {
   14   1              TMOD |= 0x01;     //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响                 
-  15   1              TH0=65536-64536;              //给定初值，这里使用定时器最大值从0开始计数一直到65535溢出
-  16   1              TL0=65536-64536;
+  15   1              TH0=65536-65036;              //给定初值，这里使用定时器最大值从0开始计数一直到65535溢出
+  16   1              TL0=65536-65036;
   17   1              EA=1;            //总中断打开
   18   1              ET0=1;           //定时器中断打开
   19   1              TR0=1;           //定时器开关打开
@@ -62,7 +62,7 @@ line level    source
   53          {
   54   1       TMOD |= 0x10;    //使用模式1，16位定时器，使用"|"符号可以在使用多个定时器时不受影响 
   55   1       TH1=0x55;            //给定初值，这里使用定时器最大值从0开始计数一直到65535溢出
-C51 COMPILER V9.00   TIMER                                                                 04/24/2016 01:25:51 PAGE 2   
+C51 COMPILER V9.00   TIMER                                                                 05/05/2016 01:06:09 PAGE 2   
 
   56   1       TL1=0x55;
   57   1       EA=1;            //总中断打开
@@ -95,13 +95,13 @@ line level    source
   84          void TIM2(void) interrupt 5 using 1//定时器2中断
   85          {
   86   1          TF2=0; 
-  87   1              P1 = ~P1;
+  87   1              //P1 = ~P1;
   88   1              userSystemHandle();
   89   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    117    ----
+   CODE SIZE        =    114    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
