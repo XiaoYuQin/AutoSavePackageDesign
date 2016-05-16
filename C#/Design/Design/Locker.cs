@@ -68,6 +68,7 @@ namespace Design
         }
         public void setLockerStatus(LockerStatus status)
         {         
+
             this.lockerStatus = status;
         }
 

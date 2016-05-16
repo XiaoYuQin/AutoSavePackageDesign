@@ -20,6 +20,7 @@ namespace Design
         }
         public void setLocker1(ulong bardcode)
         {
+            Console.WriteLine("setLocker1(" + bardcode+")");
             // 1.设置条形码规格
             EncodingOptions encodeOption = new EncodingOptions();
             encodeOption.Height = 123; // 必须制定高度、宽度

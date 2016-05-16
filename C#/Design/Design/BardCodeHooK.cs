@@ -97,7 +97,7 @@ namespace KeyBoardHock
                         Console.WriteLine("barCode.Chr = " + barCode.Chr);
                     }    
     
-                    if (DateTime.Now.Subtract(barCode.Time).TotalMilliseconds > 5000)     
+                    if (DateTime.Now.Subtract(barCode.Time).TotalMilliseconds > 100)     
                     {    
                         strBarCode = barCode.Chr.ToString();
                         Console.WriteLine("strBarCode = " + strBarCode);

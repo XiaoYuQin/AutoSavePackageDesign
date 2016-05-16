@@ -24,16 +24,20 @@ namespace eHealth
     {
         SerialPort com;
         bool isConnect;
+        SerialPort rfidCom;
+        bool isRFIDconnect;
+        
         Thread _readThread;
         bool _keepReading;
+
+
+        Thread readRFIDThread;
+        bool _keepRFIDReading;
 
         String value = "0";
         String longitude = "0";
         String latitudeX = "0";
 
-        bool isLocated = false;
-
-        int mapflag = 0;
         BardCodeHooK BarCode = new BardCodeHooK();
         private System.Timers.Timer timer = new System.Timers.Timer();
 
@@ -42,8 +46,6 @@ namespace eHealth
         Locker locker3 = new Locker();
 
         public DateTime Time;    //扫描时间   
-        String boardcode;
-        bool isReciveBoardcode = false;
 
 
         private void debug(String str)
@@ -58,6 +60,7 @@ namespace eHealth
             Control.CheckForIllegalCrossThreadCalls = false;           
             BarCode.BarCodeEvent += new BardCodeHooK.BardCodeDeletegate(BarCode_BarCodeEvent);
             com = new SerialPort();
+            rfidCom = new SerialPort();
             isConnect = false;
             
 
@@ -93,9 +96,8 @@ namespace eHealth
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
-            comboBox4.SelectedIndex = 0;
 
-            locker1.setBardCode(111111111111);
+            //locker1.setBardCode(111111111111);
             Console.WriteLine("locker1 barcode = "+locker1.getBardCode());
 
         }
@@ -112,9 +114,25 @@ namespace eHealth
                 Console.WriteLine("bardcodeString = " + BarCode.bardcodeString);
                 if (BarCode.bardcodeString == locker1.getBardCode()+"")
                 {
-                    textBox4.Text = BarCode.bardcodeString;
                     Console.WriteLine("locker 1 open");
+                    textBox1.Text = "1号锁";
+                    setLocker1Open();
                 }
+                else if (BarCode.bardcodeString == locker2.getBardCode() + "")
+                {
+                    textBox1.Text = "2号锁";
+                    Console.WriteLine("locker 2 open");
+                    setLocker2Open();
+                }
+                else if (BarCode.bardcodeString == locker3.getBardCode() + "")
+                {
+                    textBox1.Text = "3号锁";
+                    Console.WriteLine("locker 3 open");
+                    setLocker3Open();
+                }
+
+
+                textBox4.Text = BarCode.bardcodeString;
             }
         }
 
@@ -130,7 +148,7 @@ namespace eHealth
                 try
                 {
                     if (serialBox.Text == "" || serialBox.Text == null) return;
-                    com.BaudRate = 9600;
+                    com.BaudRate = 57600;
                     Console.WriteLine(serialBox.Text);
                     com.PortName = serialBox.Text;
                     com.DataBits = 8;
@@ -141,15 +159,31 @@ namespace eHealth
                     _readThread.Start();
                     button1.Text = "已打开";
                 }
-                catch (System.IO.IOException) {
+                catch (System.IO.IOException)
+                {
                     button1.Text = "未打开";
                     isConnect = false;
-                    MessageBox.Show("SerialPort Open FAIL", "ERROR");                
+                    MessageBox.Show("SerialPort Open FAIL", "ERROR");
                 }
-                catch (System.NullReferenceException){
+                catch (System.NullReferenceException)
+                {
                     button1.Text = "未打开";
                     isConnect = false;
                     MessageBox.Show("Open SerialPort", "SerialPort FAIL");
+                }
+                catch (System.UnauthorizedAccessException)
+                {
+                    button1.Text = "未打开";
+                    isConnect = false;
+                    MessageBox.Show("串口打不开", "错误");
+                }
+                catch (System.Threading.ThreadStateException)
+                {
+                    button1.Text = "未打开";
+                    _keepReading = false;
+                    com.Close();
+                    isConnect = false;
+                    MessageBox.Show("不能打开线程", "错误");
                 }
             }
             else {
@@ -178,102 +212,35 @@ namespace eHealth
 
                 if (isConnect == true){
 
-                    //byte[] readBuffer = new byte[com.ReadBufferSize + 1];
                     try
                     {
 
                         String SerialIn = com.ReadLine();
                         Console.WriteLine(SerialIn);
-
-                        String sssss = SerialIn;
-                        //textBox1.Text = textBox1.Text + sssss + "\n\r";
-                        //textBox1.SelectionStart = textBox1.Text.Length - 1;
-                        //textBox1.ScrollToCaret();
-                        //sssss = "AT+BT=60\r\n";
-                        if (sssss.IndexOf("AT+ST=") == 0)
+                        if (SerialIn.IndexOf("L1A") != -1)
                         {
-                            int i = sssss.IndexOf("AT+ST=") + 6;
-                            int j = sssss.IndexOf("\r\n");
-                            string strx = sssss.Substring(i, j - i + 2);
-                            Console.WriteLine("ST = " + strx);
-                           // label8.Text = strx;
+                            label16.BackColor = Color.Red;
                         }
-                        else if (sssss.IndexOf("AT+LO=") == 0)
+                        else if (SerialIn.IndexOf("L2A") != -1)
                         {
-                            int i = sssss.IndexOf("AT+LO=") + 6;
-                            int j = sssss.IndexOf('\n');
-                            string strx = sssss.Substring(i, sssss.Length - 6);
-                            Console.WriteLine("LO = " + strx);
-                            //label6.Text = strx;
-                            longitude = strx;
-                            if (strx == "0")
-                            {
-                                //label5.Text = "no locate";
-                                //this.label5.ForeColor = Color.Red;
-                                isLocated = false;
-                            }
-                            else
-                            {
-                                //label5.Text = "located";
-                               // this.label5.ForeColor = Color.Green;
-                                isLocated = true;
-                            }
+                            label17.BackColor = Color.Red;
                         }
-                        else if (sssss.IndexOf("AT+LA=") == 0)
+                        else if (SerialIn.IndexOf("L3A") != -1)
                         {
-                            int i = sssss.IndexOf("AT+LA=") + 6;
-                            int j = sssss.IndexOf('\n');
-                            string strx = sssss.Substring(i, sssss.Length - 6);
-                            Console.WriteLine("LA = " + strx);
-
-   
-                            //label7.Text = "-"+strx;
-                            latitudeX = strx;
-
-
-           
-
-                           /* mapflag++;
-                            if (mapflag > 20)
-                            {
-                                mapflag = 0;
-                                HttpPost();
-                            }*/
-                            //HttpPost();
+                            label18.BackColor = Color.Red;
                         }
-                        else if (sssss.IndexOf("AT+BT=") == 0)
+                        else if (SerialIn.IndexOf("L1B") != -1)
                         {
-                            int i = sssss.IndexOf("AT+BT=") + 6;
-                            int j = sssss.IndexOf('\n');
-                            Console.WriteLine("j = " + j);
-                            Console.WriteLine("i = " + i);
-                            Console.WriteLine(sssss.Length);
-                            string strx = sssss.Substring(i, sssss.Length - 6);
-                            Console.WriteLine("BT = " + strx);
-
-                            //   if (isLocated == true)
-                            {
-                                try
-                                {
-                                    int btInt = Int32.Parse(strx);
-                                     //if (btInt < 150)
-                                    {
-                                        //label10.Text = strx;
-                                        value = strx;
-                                        Console.WriteLine(btInt);
-                                       // HttpPost();
-                                    }
-                                }
-                                catch (System.FormatException)
-                                {
-                                    Console.WriteLine("conver error");
-                                }
-
-                            }
+                            label16.BackColor = Color.Green;
                         }
-
-
-                        //HttpPost(value, longitude, latitude);
+                        else if (SerialIn.IndexOf("L2B") != -1)
+                        {
+                            label17.BackColor = Color.Green;
+                        }
+                        else if (SerialIn.IndexOf("L3B") != -1)
+                        {
+                            label17.BackColor = Color.Green;
+                        }
 
                     }
                     catch (TimeoutException) { }
@@ -287,27 +254,12 @@ namespace eHealth
         }
 
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (isConnect == true) {
-                _keepReading = false;
-                com.Close();
-                isConnect = false;
-            }
-            this.Close();
-            /*com.WriteLine("1234");
-            Console.WriteLine("1234");*/
-        }
         void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            isReciveBoardcode = true;
+
 
             //模拟的做一些耗时的操作
-<<<<<<< HEAD
-            //Console.WriteLine("1234");
-=======
-           // Console.WriteLine("1234");
->>>>>>> c397eb41ec7d61fe569c77d2a3dd844468f9ab3a
+
             System.Threading.Thread.Sleep(1000000);
             System.Threading.Thread.Sleep(1000000);
         }
@@ -515,10 +467,54 @@ namespace eHealth
 
         private void button11_Click(object sender, EventArgs e)
         {
-
+            if (isRFIDconnect == false)
+            {
+                try
+                {
+                    if (comboBox5.Text == "" || comboBox5.Text == null) return;
+                    rfidCom.BaudRate = 9600;
+                    Console.WriteLine(comboBox5.Text);
+                    rfidCom.PortName = comboBox5.Text;
+                    rfidCom.DataBits = 8;
+                    rfidCom.Open();
+                    isRFIDconnect = true;
+                    readRFIDThread = new Thread(ReadRFID);      
+                    _keepRFIDReading = true;
+                    readRFIDThread.Start();
+                    button11.Text = "已打开";
+                }
+                catch (System.IO.IOException)
+                {
+                    button11.Text = "未打开";
+                    isRFIDconnect = false;
+                    MessageBox.Show("SerialPort RFID Open FAIL", "ERROR");
+                }
+                catch (System.NullReferenceException)
+                {
+                    button11.Text = "未打开";
+                    isRFIDconnect = false;
+                    MessageBox.Show("Open RFID SerialPort ", "SerialPort FAIL");
+                }
+                catch (System.UnauthorizedAccessException)
+                {
+                    button1.Text = "未打开";
+                    isRFIDconnect = false;
+                    MessageBox.Show("串口打不开", "错误");
+                }
+            }
+            else
+            {
+                if (isRFIDconnect == true)
+                {
+                    readRFIDThread.Abort();
+                    _keepRFIDReading = false;
+                    rfidCom.Close();
+                    isRFIDconnect = false;
+                    button11.Text = "未打开";
+                }
+            }
         }
 
-<<<<<<< HEAD
         private void button7_Click(object sender, EventArgs e)
         {
             int lockerNumber = comboBox2.SelectedIndex;
@@ -590,8 +586,7 @@ namespace eHealth
                 }
             }        
         }
-
-=======
+        //
         private void Form1_Load(object sender, EventArgs e)
         {
             System.Console.WriteLine("Start");
@@ -602,14 +597,153 @@ namespace eHealth
         {
             System.Console.WriteLine("Stop");
             BarCode.Stop();
+
+            if (isConnect == true)
+            {
+                _keepReading = false;
+                com.Close();
+                isConnect = false;
+            }
+            if (readRFIDThread != null)
+            {
+                if (readRFIDThread.ThreadState == ThreadState.Running)
+                    readRFIDThread.Abort();      
+            }
+      
+
+            if (isRFIDconnect == true)
+            {
+                _keepRFIDReading = false;
+                rfidCom.Close();
+                isRFIDconnect = false;
+            }
+            if (_readThread != null)
+            {
+                if (_readThread.ThreadState == ThreadState.Running)
+                    _readThread.Abort();
+            }
+
+            
+        }
+        
+        private void ReadRFID()
+        {
+            Console.WriteLine("ReadRFID()");
+            while (_keepRFIDReading)
+            {
+                if (isRFIDconnect == true)
+                {
+                    //byte[] readBuffer = new byte[com.ReadBufferSize + 1];
+                    /*
+06 12 FE 00 15 03
+06 22 FF 00 24 03
+06 32 00 00 CB 03
+08 12 00 02 04 00 E3 03
+0A 22 00 04 94 9C 5E 19 9C 03
+06 32 00 00 CB 03
+06 32 00 00 CB 03
+06 32 00 00 CB 03
+06 32 00 00 CB 03
+08 12 00 02 04 00 E3 03
+0A 22 00 04 84 AA 3C 19 D8 03
+06 32 00 00 CB 03
+                     */
+                    try
+                    {
+                        Byte[] b=new Byte[100];
+                        Byte[] read = new Byte[100];
+                        b[0] = 0x07;
+                        b[1] = 0x12;
+                        b[2] = 0x41;
+                        b[3] = 0x01;
+                        b[4] = 0x52;
+                        b[5] = 0xf8;
+                        b[6] = 0x03;                        
+                        rfidCom.Write(b,0,7);
+                        //Console.WriteLine("SerialInReq");
+                        Thread.Sleep(100);
+                        rfidCom.Read(read, 0, 10);
+                        for (int i = 0; i < read.Length; i++)
+                        {
+                            //Console.Write(" {0:x2}" + " ", read[i]);
+                        }
+                        b[0] = 0x0c;
+                        b[1] = 0x22;
+                        b[2] = 0x42;
+                        b[3] = 0x06;
+                        b[4] = 0x93;
+                        b[5] = 0x00;
+                        b[6] = 0x78;
+                        b[7] = 0x01;
+                        b[8] = 0xa6;
+                        b[9] = 0x00;
+                        b[10] = 0xd9;
+                        b[11] = 0x03;
+                        rfidCom.Write(b, 0, 12);
+                        //Console.WriteLine("SerialInCMMC");
+                        Thread.Sleep(100);
+                        rfidCom.Read(read, 0, 10);
+                        for (int i = 0; i < read.Length; i++)
+                        {
+                            //Console.Write(" {0:x2}" + " ", read[i]);
+                        }
+                        if (read[5] == 0xAA)
+                        {
+                            setLocker1Open();
+                        }
+                        else if (read[5] == 0x9C)
+                        {
+                            setLocker2Open();
+                        }
+                        b[0] = 0x06;
+                        b[1] = 0x32;
+                        b[2] = 0x44;
+                        b[3] = 0x00;
+                        b[4] = 0x8f;
+                        b[5] = 0x03;                        
+                        rfidCom.Write(b, 0, 6);
+                        //Console.WriteLine("SerialInEND");
+                        Thread.Sleep(100);
+                        rfidCom.Read(read, 0, 10);
+                        for (int i = 0; i < read.Length; i++)
+                        {
+                           // Console.Write(" {0:x2}" + " ", read[i]);
+                        }
+                    }
+                    catch (TimeoutException) { }
+                    catch (IOException) { }
+                }
+                else
+                {
+                    TimeSpan waitTime = new TimeSpan(0, 0, 0, 500);
+                    Thread.Sleep(waitTime);
+                }
+            } 
+        
+        
+        }        
+   
+        private void setLocker1Open()
+        {
+            Console.WriteLine("setLocker1Open");
+            if (isConnect == false)
+            {
+                MessageBox.Show("串口未和单片机连接", "错误");
+                return;
+            }
+
+            com.WriteLine("1");
+        }
+        private void setLocker2Open()
+        {
+            Console.WriteLine("setLocker2Open");
+            com.WriteLine("2");
         }
 
-
->>>>>>> c397eb41ec7d61fe569c77d2a3dd844468f9ab3a
-
-
-
-
-
+        private void setLocker3Open()
+        {
+            Console.WriteLine("setLocker3Open");
+            com.WriteLine("3");
+        }
     }
 }

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   UART                                                                  05/15/2016 00:26:00 PAGE 1   
+C51 COMPILER V9.00   UART                                                                  05/17/2016 01:50:45 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE UART
@@ -62,7 +62,7 @@ line level    source
                        SCON  = 0x50;                           // SCON: 模式 1, 8-bit UART, 使能接收  
                        TMOD |= 0x20;                           // TMOD: timer 1, mode 2, 8-bit 重装
                        TH1   = 0xFF;                           // TH1:  重装值 9600 波特率 晶振 11.0592MHz  
-C51 COMPILER V9.00   UART                                                                  05/15/2016 00:26:00 PAGE 2   
+C51 COMPILER V9.00   UART                                                                  05/17/2016 01:50:45 PAGE 2   
 
                        TL1=0xFF;
                        TR1   = 1;                              // TR1:  timer 1 打开                                             
@@ -126,7 +126,7 @@ line level    source
  115   1      }
  116          #if 0
               void debug(uint8 *fmt ,...)
-C51 COMPILER V9.00   UART                                                                  05/15/2016 00:26:00 PAGE 3   
+C51 COMPILER V9.00   UART                                                                  05/17/2016 01:50:45 PAGE 3   
 
               {
               

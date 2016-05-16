@@ -34,8 +34,8 @@ namespace Design
             this.bardCode = bardCode;
             // 1.设置条形码规格
             EncodingOptions encodeOption = new EncodingOptions();
-            encodeOption.Height = 226; // 必须制定高度、宽度
-            encodeOption.Width = 426;
+            encodeOption.Height = 282; // 必须制定高度、宽度
+            encodeOption.Width = 568;
             // 2.生成条形码图片并保存
             ZXing.BarcodeWriter wr = new BarcodeWriter();
             wr.Options = encodeOption;

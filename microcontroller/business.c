@@ -86,35 +86,23 @@ void userBusinessEventHandle()
 				break;
 				case EVENT_LOCKER_STATUS_RSP:
 				{
-					//reportLockerStatus();
+					reportLockerStatus();
 					setEvent(EVENT_LOCKER_STATUS_RSP, ENABLE,500,1);//¶¨Î»
 				}
 				break;
 				case EVENT_LOCKER1_UNLOCKED:
-					lockerStatus1 = UNLOCK;
-					//uartSendStr("unlocker1\r\n");
-					if(lockerStatus1 == LOCK)
-						uartSendStr("L1A\r\n");
-					else
-						uartSendStr("L1B\r\n");			
+					lockerStatus1 = LOCK;
+					uartSendStr("L1A\r\n");		
 					locker1 = 1;
 				break;
 				case EVENT_LOCKER2_UNLOCKED:
-					lockerStatus2 = UNLOCK;					
-					//uartSendStr("unlocker2\r\n");
-					if(lockerStatus2 == LOCK)
-						uartSendStr("L2A\r\n");
-					else
-						uartSendStr("L2B\r\n");			
+					lockerStatus2 = LOCK;					
+					uartSendStr("L2A\r\n");
 					locker2 = 1;
 				break;
 				case EVENT_LOCKER3_UNLOCKED:
-					lockerStatus3 = UNLOCK;
-					//uartSendStr("unlocker3\r\n");
-					if(lockerStatus3 == LOCK)
-						uartSendStr("L3A\r\n");
-					else
-						uartSendStr("L3B\r\n");			
+					lockerStatus3 = LOCK;
+					uartSendStr("L3A\r\n");		
 					locker3 = 1;
 				break;
 				case EVENT_SEGMENT_DISPLAYER:
@@ -178,22 +166,16 @@ void dealLocker(uint8 *cmd)
 		{
 			locker1 = 0;
 			//uartSendStr("open locker1 5s\r\n");
-			if(lockerStatus1 == LOCK)
-				uartSendStr("L1A\r\n");
-			else
-				uartSendStr("L1B\r\n"); 	
-			lockerStatus1 = LOCK;			
+			uartSendStr("L1B\r\n"); 	
+			lockerStatus1 = UNLOCK;			
 			setEvent(EVENT_LOCKER1_UNLOCKED, ENABLE,3000,1);
 		}
 		break;
 		case '2':
 		{
 			locker2 = 0;			
-			if(lockerStatus2 == LOCK)
-				uartSendStr("L2A\r\n");
-			else
-				uartSendStr("L2B\r\n"); 				
-			lockerStatus2 = LOCK;			
+			uartSendStr("L2B\r\n"); 				
+			lockerStatus2 = UNLOCK;			
 			//uartSendStr("open locker2 5s\r\n");
 			setEvent(EVENT_LOCKER2_UNLOCKED, ENABLE,3000,1);
 		}
@@ -201,11 +183,8 @@ void dealLocker(uint8 *cmd)
 		case '3':
 		{
 			locker3 = 0;
-			if(lockerStatus3 == LOCK)
-				uartSendStr("L3A\r\n");
-			else
-				uartSendStr("L3B\r\n");			
-			lockerStatus3 = LOCK;			
+			uartSendStr("L3B\r\n");			
+			lockerStatus3 = UNLOCK;			
 			//uartSendStr("open locker3 5s\r\n");
 			setEvent(EVENT_LOCKER3_UNLOCKED, ENABLE,3000,1);		
 		}

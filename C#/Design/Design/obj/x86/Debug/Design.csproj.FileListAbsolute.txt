@@ -28,14 +28,10 @@ F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.pdb
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.dll
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.pdb
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.xml
-<<<<<<< HEAD
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.ShowAllBardCodeWindows.resources
 D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe.config
 D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.pdb
 D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.xml
 D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.ShowAllBardCodeWindows.resources
-=======
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.exe
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.pdb
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csprojResolveAssemblyReference.cache
->>>>>>> c397eb41ec7d61fe569c77d2a3dd844468f9ab3a
