@@ -297,7 +297,7 @@ namespace eHealth
         void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             //模拟的做一些耗时的操作
-            Console.WriteLine("1234");
+            //Console.WriteLine("1234");
             System.Threading.Thread.Sleep(1000000);
             System.Threading.Thread.Sleep(1000000);
         }
@@ -402,7 +402,7 @@ namespace eHealth
                         {
                             MessageBox.Show("密码正确", "正确");
                             debug("锁1密码正确");
-                            com.WriteLine("TOLOCK");
+                            com.WriteLine("UNLOCK1");
                         }
                         else
                         {
@@ -419,6 +419,7 @@ namespace eHealth
                         {
                             MessageBox.Show("密码正确", "正确");
                             debug("锁2密码正确");
+                            com.WriteLine("UNLOCK2");
                         }
                         else
                         {
@@ -435,6 +436,7 @@ namespace eHealth
                         {
                             MessageBox.Show("密码正确", "正确");
                             debug("锁3密码正确");
+                            com.WriteLine("UNLOCK3");
                         }
                         else
                         {
@@ -504,6 +506,78 @@ namespace eHealth
         private void button11_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            int lockerNumber = comboBox2.SelectedIndex;
+            String password = textBox3.Text;
+            debug("锁为" + lockerNumber + "  设置的密码为：" + textBox3.Text);
+            if (isConnect == false)
+            {
+                MessageBox.Show("串口未和单片机连接", "错误");
+                return;
+            }
+
+
+
+            if (textBox3.Text != "" || textBox3.Text != null)
+            {
+                switch (lockerNumber)
+                {
+                    case 0:
+                        if (locker1.getPassword() == null || locker1.getPassword() == "")
+                        {
+                            MessageBox.Show("锁1没有密码", "错误");
+                            return;
+                        }
+                        if (password == locker1.getPassword())
+                        {
+                            MessageBox.Show("密码正确", "正确");
+                            debug("锁1密码正确");
+                            com.WriteLine("UNLOCK1");
+                        }
+                        else
+                        {
+                            MessageBox.Show("密码错误", "错误");
+                        }
+                    break;
+                    case 1:
+                        if (locker2.getPassword() == null || locker2.getPassword() == "")
+                        {
+                            MessageBox.Show("锁2没有密码", "错误");
+                            return;
+                        }
+                        if (password == locker1.getPassword())
+                        {
+                            MessageBox.Show("密码正确", "正确");
+                            debug("锁2密码正确");
+                            com.WriteLine("UNLOCK2");
+                        }
+                        else
+                        {
+                            MessageBox.Show("密码错误", "错误");
+                        }
+                    break;
+                    case 2:
+                        if (locker3.getPassword() == null || locker3.getPassword() == "")
+                        {
+                            MessageBox.Show("锁3没有密码", "错误");
+                            return;
+                        }
+                        if (password == locker1.getPassword())
+                        {
+                            MessageBox.Show("密码正确", "正确");
+                            debug("锁3密码正确");
+                            com.WriteLine("UNLOCK3");
+                        }
+                        else
+                        {
+                            MessageBox.Show("密码错误", "错误");
+                        }
+                    break;
+                }
+            }        
         }
 
 

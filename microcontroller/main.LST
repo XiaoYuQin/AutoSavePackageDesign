@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   MAIN                                                                  05/05/2016 01:06:09 PAGE 1   
+C51 COMPILER V9.00   MAIN                                                                  05/15/2016 00:26:00 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
@@ -42,17 +42,17 @@ line level    source
   33          {
   34   1      
   35   1              lockerPin = 0;
-  36   1              
-  37   1              Init_Timer0();
-  38   1      
-  39   1              InitUART(B57600);       
-  40   1              //uartSendStr("int..\r\n");
-  41   1              //Init_Timer0();
-  42   1      //      TIM2Inital();
-  43   1      
-  44   1              userSystemEventInit();          
-  45   1              //uartSendStr("int end...\r\n");        
-  46   1              lcd_init();
+  36   1              Init_Timer0();
+  37   1      
+  38   1              InitUART(B57600);       
+  39   1              uartSendStr("int..\r\n");
+  40   1              //Init_Timer0();
+  41   1      //      TIM2Inital();
+  42   1      
+  43   1              userSystemEventInit();          
+  44   1              uartSendStr("int end...\r\n");  
+  45   1              lockerInit();
+  46   1              
   47   1      }
   48          void main()
   49          { 
@@ -62,55 +62,28 @@ line level    source
   53   1              
   54   1              //LED1  = 0; //置P1_7口为低电平 ,点亮LED
   55   1                      
-C51 COMPILER V9.00   MAIN                                                                  05/05/2016 01:06:09 PAGE 2   
+C51 COMPILER V9.00   MAIN                                                                  05/15/2016 00:26:00 PAGE 2   
 
   56   1              setEvent(EVENT_UART_RECIVE, ENABLE,30,1);
   57   1              setEvent(EVENT_LOCKER_STATUS_RSP, ENABLE,300,1);
-  58   1              setEvent(EVENT_LOCKER_LOCKED, ENABLE,1,1);
-  59   1              
-  60   1              //setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
-  61   1              uartDataClean();        
-  62   1      
-  63   1              while (dis1 [i]!='\0')
+  58   1              //setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
+  59   1              uartDataClean();        
+  60   1      
+  61   1              i=0;
+  62   1              uartSendStr("LCD \r\n");        
+  63   1              while(1)
   64   1              {
-  65   2                      lcd_wdat (dis1 [i]);
-  66   2                      i++;    
-  67   2              } 
-  68   1      
-  69   1              lcd_pos (0x40);
-  70   1              i=0;
-  71   1              while (dis2 [i]!='\0')
-  72   1              {
-  73   2                      lcd_wdat (dis2 [i]);
-  74   2                      i++;    
-  75   2              } 
-  76   1              //uartSendStr("LCD \r\n");      
-  77   1              dealWHISU();
-  78   1              uartSendByte(U8T_data_H);       
-  79   1              uartSendByte(U8T_data_L);       
-  80   1              uartSendByte(U8RH_data_H);      
-  81   1              uartSendByte(U8RH_data_L);      
-  82   1              while(1)
-  83   1              {
-  84   2                      /*for(i=0;i<10;i++)       
-  85   2                      {
-  86   2                       P0=table[i];
-  87   2                         P2_0 = 0;
-  88   2                         delayms(5);
-  89   2                         //P2_0 = 1;
-  90   2                         delayms(10000);
-  91   2                      }        */
-  92   2                      userBusinessEventHandle();
-  93   2      
-  94   2              }
-  95   1      }
-  96          
-  97          
+  65   2                      userBusinessEventHandle();
+  66   2      
+  67   2              }
+  68   1      }
+  69          
+  70          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    206    ----
-   CONSTANT SIZE    =     23    ----
+   CODE SIZE        =    119    ----
+   CONSTANT SIZE    =     51    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----       2

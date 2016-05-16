@@ -31,6 +31,9 @@ sbit P2_2 = P2^2;
 sbit P2_3 = P2^3;
 
 
+sbit locker1 = P1^0;
+sbit locker2 = P1^1;
+sbit locker3 = P1^2;
 
 
 SEGMENT_DISPLAYER segmentDisplaysIndex = SEGMENT_DISPLAYER_1_ON;
@@ -44,7 +47,23 @@ typedef enum{
 	UNLOCK
 }LOCKER_STATUS;
 
+typedef enum{
+	LOCKER1_STATUS_REPORT,
+	LOCKER2_STATUS_REPORT,
+	LOCKER3_STATUS_REPORT
+}LOCKER_STATUS_STEP;
+
+LOCKER_STATUS_STEP lockerStatusStep;
+
+
+
 LOCKER_STATUS lockerStatus = LOCK;
+
+xdata LOCKER_STATUS lockerStatus1 = LOCK;
+xdata LOCKER_STATUS lockerStatus2 = LOCK;
+xdata LOCKER_STATUS lockerStatus3 = LOCK;
+
+
 
 
 
@@ -60,53 +79,44 @@ void userBusinessEventHandle()
 			{
 				case EVENT_UART_RECIVE:
 				{
-					uartSendStr(uartData);
 					dealLocker(uartData);
 					uartDataClean();
 					setEvent(EVENT_UART_RECIVE, ENABLE,20,1);
 				}
 				break;
-				case EVENT_LOCK_LOCKER:
-				{
-					lockerStatus = UNLOCK;
-					reportLockerStatus();
-					//uartSendStr("UNLOCK\r\n");
-				}
-				break;
 				case EVENT_LOCKER_STATUS_RSP:
 				{
-					reportLockerStatus();
-					setEvent(EVENT_LOCKER_STATUS_RSP, ENABLE,3000,1);
+					//reportLockerStatus();
+					setEvent(EVENT_LOCKER_STATUS_RSP, ENABLE,500,1);//定位
 				}
 				break;
-				/*锁倒计时*/
-				case EVENT_LOCKER_DAOJISHI:
-				{
-					
-			
-
-						
-
-					/*if(timer < -1)
-					{
-						timer =LOCKER_TIMER;
-						setEvent(EVENT_LOCKER_LOCKED, ENABLE,1,1);
-						setEvent(EVENT_LOCKER_DAOJISHI, DISABLE,0,0);
-						lockerStatus = LOCK;
-						reportLockerStatus();
-					}
+				case EVENT_LOCKER1_UNLOCKED:
+					lockerStatus1 = UNLOCK;
+					//uartSendStr("unlocker1\r\n");
+					if(lockerStatus1 == LOCK)
+						uartSendStr("L1A\r\n");
 					else
-					{					
-						uartSendStr("EVENT_LOCKER_DAOJISHI\r\n");
-						setEvent(EVENT_LOCKER_DAOJISHI, ENABLE,200,1);
-						lockerStatus = UNLOCK;
-						reportLockerStatus();						
-					}*/
-				}
+						uartSendStr("L1B\r\n");			
+					locker1 = 1;
 				break;
-				case EVENT_LOCKER_LOCKED:
-
-					break;
+				case EVENT_LOCKER2_UNLOCKED:
+					lockerStatus2 = UNLOCK;					
+					//uartSendStr("unlocker2\r\n");
+					if(lockerStatus2 == LOCK)
+						uartSendStr("L2A\r\n");
+					else
+						uartSendStr("L2B\r\n");			
+					locker2 = 1;
+				break;
+				case EVENT_LOCKER3_UNLOCKED:
+					lockerStatus3 = UNLOCK;
+					//uartSendStr("unlocker3\r\n");
+					if(lockerStatus3 == LOCK)
+						uartSendStr("L3A\r\n");
+					else
+						uartSendStr("L3B\r\n");			
+					locker3 = 1;
+				break;
 				case EVENT_SEGMENT_DISPLAYER:
 				{
 					switch(segmentDisplaysIndex)
@@ -159,8 +169,50 @@ void userBusinessEventHandle()
 
 void dealLocker(uint8 *cmd)
 {
-	if(uartIndex < 5 ) return;
+	if(uartIndex < 2 ) return;
 	if(uartIndex == 0) return;
+
+	switch(cmd[0])
+	{
+		case '1':
+		{
+			locker1 = 0;
+			//uartSendStr("open locker1 5s\r\n");
+			if(lockerStatus1 == LOCK)
+				uartSendStr("L1A\r\n");
+			else
+				uartSendStr("L1B\r\n"); 	
+			lockerStatus1 = LOCK;			
+			setEvent(EVENT_LOCKER1_UNLOCKED, ENABLE,3000,1);
+		}
+		break;
+		case '2':
+		{
+			locker2 = 0;			
+			if(lockerStatus2 == LOCK)
+				uartSendStr("L2A\r\n");
+			else
+				uartSendStr("L2B\r\n"); 				
+			lockerStatus2 = LOCK;			
+			//uartSendStr("open locker2 5s\r\n");
+			setEvent(EVENT_LOCKER2_UNLOCKED, ENABLE,3000,1);
+		}
+		break;
+		case '3':
+		{
+			locker3 = 0;
+			if(lockerStatus3 == LOCK)
+				uartSendStr("L3A\r\n");
+			else
+				uartSendStr("L3B\r\n");			
+			lockerStatus3 = LOCK;			
+			//uartSendStr("open locker3 5s\r\n");
+			setEvent(EVENT_LOCKER3_UNLOCKED, ENABLE,3000,1);		
+		}
+		break;
+	}
+
+#if 0
 	
 	if((cmd[0] == 'U')&&(cmd[1] == 'N')&&cmd[2] == 'L'&&cmd[3] == 'O'&&cmd[4] == 'C'&&cmd[5] == 'K'){
 		lockerPin = 1;
@@ -179,17 +231,44 @@ void dealLocker(uint8 *cmd)
 		setEvent(EVENT_LOCKER_LOCKED, ENABLE,1,1);
 		setEvent(EVENT_LOCKER_DAOJISHI, DISABLE,0,0);
 	}
+#endif	
 }
 void reportLockerStatus()
 {
-	if(lockerStatus == UNLOCK)
+	switch(lockerStatusStep)
 	{
-		lockerPin = 1;
-		//uartSendStr("unlock\r\n");
-	}
-	else
-	{
-		lockerPin = 0;
-		//uartSendStr("lock\r\n");
-	}
+		case LOCKER1_STATUS_REPORT:
+		{
+			lockerStatusStep = LOCKER2_STATUS_REPORT;
+			if(lockerStatus1 == LOCK)
+				uartSendStr("L1A\r\n");
+			else
+				uartSendStr("L1B\r\n"); 	
+		}
+		break;
+		case LOCKER2_STATUS_REPORT:
+		{
+			lockerStatusStep = LOCKER3_STATUS_REPORT;
+			if(lockerStatus2 == LOCK)
+				uartSendStr("L2A\r\n");
+			else
+				uartSendStr("L2B\r\n"); 	
+		}
+		break;
+		case LOCKER3_STATUS_REPORT:
+		{
+			lockerStatusStep = LOCKER1_STATUS_REPORT;
+			if(lockerStatus3 == LOCK)
+				uartSendStr("L3A\r\n");
+			else
+				uartSendStr("L3B\r\n");
+		}
+		break;
+	}	
+}
+void lockerInit()
+{
+	locker1 = 1;
+	locker2 = 1;
+	locker3 = 1;
 }

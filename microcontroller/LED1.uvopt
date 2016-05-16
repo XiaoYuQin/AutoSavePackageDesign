@@ -196,10 +196,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>20</ColumnNumber>
+      <ColumnNumber>27</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>70</TopLine>
-      <CurrentLine>87</CurrentLine>
+      <TopLine>44</TopLine>
+      <CurrentLine>48</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -252,31 +252,31 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>5</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>59</TopLine>
-      <CurrentLine>65</CurrentLine>
+      <TopLine>196</TopLine>
+      <CurrentLine>224</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\business.c</PathWithFileName>
       <FilenameWithoutPath>business.c</FilenameWithoutPath>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
-      <FileNumber>0</FileNumber>
+      <FileNumber>6</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1</TopLine>
-      <CurrentLine>23</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\1602.c</PathWithFileName>
       <FilenameWithoutPath>1602.c</FilenameWithoutPath>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
-      <FileNumber>0</FileNumber>
+      <FileNumber>7</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
@@ -1667,15 +1667,21 @@
         </Doc>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>20</ColumnNumber>
-          <TopLine>70</TopLine>
-          <CurrentLine>87</CurrentLine>
+          <ColumnNumber>8</ColumnNumber>
+          <TopLine>44</TopLine>
+          <CurrentLine>58</CurrentLine>
         </Doc>
         <Doc>
           <Name>C:\KEIL\C51\INC\REG52.H</Name>
           <ColumnNumber>0</ColumnNumber>
           <TopLine>86</TopLine>
           <CurrentLine>94</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\business.c</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>196</TopLine>
+          <CurrentLine>224</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

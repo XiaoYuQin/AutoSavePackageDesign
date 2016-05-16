@@ -33,17 +33,17 @@ void init()
 {
 
 	lockerPin = 0;
-	
 	Init_Timer0();
 
 	InitUART(B57600);	
-	//uartSendStr("int..\r\n");
+	uartSendStr("int..\r\n");
 	//Init_Timer0();
 //	TIM2Inital();
 
 	userSystemEventInit();		
-	//uartSendStr("int end...\r\n");	
-	lcd_init();
+	uartSendStr("int end...\r\n");	
+	lockerInit();
+	
 }
 void main()
 { 
@@ -55,40 +55,13 @@ void main()
  		
 	setEvent(EVENT_UART_RECIVE, ENABLE,30,1);
 	setEvent(EVENT_LOCKER_STATUS_RSP, ENABLE,300,1);
-	setEvent(EVENT_LOCKER_LOCKED, ENABLE,1,1);
-	
 	//setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
 	uartDataClean();	
 
-	while (dis1 [i]!='\0')
-	{
-		lcd_wdat (dis1 [i]);
-		i++;	
-	} 
-
-	lcd_pos (0x40);
 	i=0;
-	while (dis2 [i]!='\0')
-	{
-		lcd_wdat (dis2 [i]);
-		i++;	
-	} 
-	//uartSendStr("LCD \r\n");	
-	dealWHISU();
-	uartSendByte(U8T_data_H);	
-	uartSendByte(U8T_data_L);	
-	uartSendByte(U8RH_data_H);	
-	uartSendByte(U8RH_data_L);	
+	uartSendStr("LCD \r\n");	
 	while(1)
 	{
-		/*for(i=0;i<10;i++)	  
-		{
-		 P0=table[i];
-		   P2_0 = 0;
-		   delayms(5);
-		   //P2_0 = 1;
-		   delayms(10000);
-		}	 */
 		userBusinessEventHandle();
 
 	}

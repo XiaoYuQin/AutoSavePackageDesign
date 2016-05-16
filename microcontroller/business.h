@@ -8,5 +8,8 @@ void userBusinessEventHandle();
 void dealLocker(uint8 *cmd);
 void reportLockerStatus();
 
+void lockerInit();
+
+
 #endif
 

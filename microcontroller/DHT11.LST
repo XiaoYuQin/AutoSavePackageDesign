@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   DHT11                                                                 05/05/2016 01:06:10 PAGE 1   
+C51 COMPILER V9.00   DHT11                                                                 05/15/2016 00:26:01 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DHT11
@@ -62,7 +62,7 @@ line level    source
   51   1              for(;j>0;j--)
   52   1              {       
   53   2                      for(i=0;i<27;i++);
-C51 COMPILER V9.00   DHT11                                                                 05/05/2016 01:06:10 PAGE 2   
+C51 COMPILER V9.00   DHT11                                                                 05/15/2016 00:26:01 PAGE 2   
 
   54   2              }
   55   1      }
@@ -126,7 +126,7 @@ line level    source
  113   1              Delay_10us();
  114   1              Delay_10us();
  115   1              Delay_10us();
-C51 COMPILER V9.00   DHT11                                                                 05/05/2016 01:06:10 PAGE 3   
+C51 COMPILER V9.00   DHT11                                                                 05/15/2016 00:26:01 PAGE 3   
 
  116   1              Delay_10us();
  117   1              //主机设为输入 判断从机响应信号 
@@ -190,7 +190,7 @@ line level    source
                               {
                                       //数据接收完毕处理。
                                       count_r=0;
-C51 COMPILER V9.00   DHT11                                                                 05/05/2016 01:06:10 PAGE 4   
+C51 COMPILER V9.00   DHT11                                                                 05/15/2016 00:26:01 PAGE 4   
 
                                       str[0]=indata[0];
                                       str[1]=indata[1];
