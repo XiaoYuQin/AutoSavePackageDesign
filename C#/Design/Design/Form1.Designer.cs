@@ -67,8 +67,8 @@
             this.button8 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label15 = new System.Windows.Forms.Label();
-            this.button11 = new System.Windows.Forms.Button();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.button11 = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -80,6 +80,7 @@
             // 
             // serialBox
             // 
+            this.serialBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.serialBox.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.serialBox.FormattingEnabled = true;
             this.serialBox.Location = new System.Drawing.Point(74, 9);
@@ -159,6 +160,7 @@
             // comboBox2
             // 
             this.comboBox2.DisplayMember = "1";
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
@@ -174,6 +176,7 @@
             // comboBox1
             // 
             this.comboBox1.DisplayMember = "1";
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
@@ -335,6 +338,7 @@
             // comboBox4
             // 
             this.comboBox4.DisplayMember = "1";
+            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Items.AddRange(new object[] {
             "1号柜",
@@ -349,6 +353,7 @@
             // comboBox3
             // 
             this.comboBox3.DisplayMember = "1";
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Items.AddRange(new object[] {
             "1号柜",
@@ -492,6 +497,16 @@
             this.label15.TabIndex = 22;
             this.label15.Text = "端口";
             // 
+            // comboBox5
+            // 
+            this.comboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox5.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(234, 41);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(91, 34);
+            this.comboBox5.TabIndex = 20;
+            // 
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -502,15 +517,6 @@
             this.button11.Text = "打开";
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
-            // comboBox5
-            // 
-            this.comboBox5.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(234, 41);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(91, 34);
-            this.comboBox5.TabIndex = 20;
             // 
             // label16
             // 
@@ -560,6 +566,8 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "智能家居控制系统";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
