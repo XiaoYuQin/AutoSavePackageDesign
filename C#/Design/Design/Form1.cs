@@ -14,6 +14,7 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using Design;
+using KeyBoardHock;
 
 namespace eHealth
 {
@@ -33,12 +34,16 @@ namespace eHealth
         bool isLocated = false;
 
         int mapflag = 0;
-        //BardCodeHooK BarCode = new BardCodeHooK();
+        BardCodeHooK BarCode = new BardCodeHooK();
         private System.Timers.Timer timer = new System.Timers.Timer();
 
         Locker locker1 = new Locker();
         Locker locker2 = new Locker();
         Locker locker3 = new Locker();
+
+        public DateTime Time;    //扫描时间   
+        String boardcode;
+        bool isReciveBoardcode = false;
 
 
         private void debug(String str)
@@ -50,15 +55,15 @@ namespace eHealth
         public Form1()
         {
             InitializeComponent();
-            Control.CheckForIllegalCrossThreadCalls = false;
-            //BarCode.BarCodeEvent += new BardCodeHooK.BardCodeDeletegate(BarCode_BarCodeEvent);
+            Control.CheckForIllegalCrossThreadCalls = false;           
+            BarCode.BarCodeEvent += new BardCodeHooK.BardCodeDeletegate(BarCode_BarCodeEvent);
             com = new SerialPort();
             isConnect = false;
             
 
 
             timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
-            timer.Enabled = true;
+  
 
  
             Console.WriteLine("serial port");
@@ -89,8 +94,12 @@ namespace eHealth
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
-            
+
+            locker1.setBardCode(111111111111);
+            Console.WriteLine("locker1 barcode = "+locker1.getBardCode());
+
         }
+        /*********系统键盘钩子**********/
         private delegate void ShowInfoDelegate(BardCodeHooK.BarCodes barCode);
         private void ShowInfo(BardCodeHooK.BarCodes barCode)
         {
@@ -100,17 +109,12 @@ namespace eHealth
             }
             else
             {
-                /*textBox1.Text = barCode.KeyName;
-                textBox2.Text = barCode.VirtKey.ToString();
-                textBox3.Text = barCode.ScanCode.ToString();
-                textBox4.Text = barCode.Ascll.ToString();
-                textBox5.Text = barCode.Chr.ToString();
-                textBox6.Text = barCode.IsValid ? barCode.BarCode : "";//是否为扫描枪输入，如果为true则是 否则为键盘输入
-                textBox7.Text += barCode.KeyName;*/
-
-                MessageBox.Show(barCode.IsValid.ToString());
-
-                //Console.WriteLine(text);
+                Console.WriteLine("bardcodeString = " + BarCode.bardcodeString);
+                if (BarCode.bardcodeString == locker1.getBardCode()+"")
+                {
+                    textBox4.Text = BarCode.bardcodeString;
+                    Console.WriteLine("locker 1 open");
+                }
             }
         }
 
@@ -296,8 +300,14 @@ namespace eHealth
         }
         void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            isReciveBoardcode = true;
+
             //模拟的做一些耗时的操作
+<<<<<<< HEAD
             //Console.WriteLine("1234");
+=======
+           // Console.WriteLine("1234");
+>>>>>>> c397eb41ec7d61fe569c77d2a3dd844468f9ab3a
             System.Threading.Thread.Sleep(1000000);
             System.Threading.Thread.Sleep(1000000);
         }
@@ -508,6 +518,7 @@ namespace eHealth
 
         }
 
+<<<<<<< HEAD
         private void button7_Click(object sender, EventArgs e)
         {
             int lockerNumber = comboBox2.SelectedIndex;
@@ -580,6 +591,21 @@ namespace eHealth
             }        
         }
 
+=======
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            System.Console.WriteLine("Start");
+            BarCode.Start();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            System.Console.WriteLine("Stop");
+            BarCode.Stop();
+        }
+
+
+>>>>>>> c397eb41ec7d61fe569c77d2a3dd844468f9ab3a
 
 
 

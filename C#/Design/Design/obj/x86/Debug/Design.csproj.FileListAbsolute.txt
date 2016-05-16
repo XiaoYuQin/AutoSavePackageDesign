@@ -6,14 +6,6 @@ F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.Propert
 F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.csproj.GenerateResource.Cache
 F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.exe
 F:\GitCode\AutoSavePackageDesign\C#\eHealth\eHealth\obj\x86\Debug\Design.pdb
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.exe
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.pdb
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.pdb
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csprojResolveAssemblyReference.cache
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\eHealth.Form1.resources
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.Properties.Resources.resources
-F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csproj.GenerateResource.Cache
 D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.exe
 D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.pdb
 D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe
@@ -26,12 +18,24 @@ D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.AboutBox1.re
 D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.BardCodeMessageBox.resources
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.AboutBox1.resources
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.BardCodeMessageBox.resources
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\eHealth.Form1.resources
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.Properties.Resources.resources
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.ShowAllBardCodeWindows.resources
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csproj.GenerateResource.Cache
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe.config
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.pdb
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.dll
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.pdb
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.xml
+<<<<<<< HEAD
 F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.ShowAllBardCodeWindows.resources
 D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\Design.exe.config
 D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.pdb
 D:\code\AutoSavePackageDesign\C#\Design\Design\bin\Debug\zxing.xml
 D:\code\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.ShowAllBardCodeWindows.resources
+=======
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.exe
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.pdb
+F:\GitCode\AutoSavePackageDesign\C#\Design\Design\obj\x86\Debug\Design.csprojResolveAssemblyReference.cache
+>>>>>>> c397eb41ec7d61fe569c77d2a3dd844468f9ab3a
