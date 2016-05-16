@@ -1,0 +1,225 @@
+C51 COMPILER V9.00   BUSINESS                                                              05/05/2016 01:06:09 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE BUSINESS
+OBJECT MODULE PLACED IN business.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE business.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "user_sys.h"
+   2          #include "uart.h"
+   3          #include "business.h"
+   4          #include <string.h>
+   5          #include <stdio.h>
+   6          #include <reg52.h>
+   7          #include "phy.h"
+   8          
+   9          #define LOCKER_TIMER 7
+  10          
+  11          extern app_Event getApp;
+  12          
+  13          extern uint8 uartData[15];
+  14          extern uint8 uartIndex;
+  15          
+  16          #if 0
+              uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+              sbit P2_0 = P2^0;
+              sbit P2_1 = P2^1;
+              sbit P2_2 = P2^2;
+              sbit P2_3 = P2^3;
+              #endif
+  23          
+  24          //uint8 code table[]={0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};//不带小数点的共阴数码管段值
+  25          //uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  26          
+  27          uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  28          sbit P2_0 = P2^0;
+  29          sbit P2_1 = P2^1;
+  30          sbit P2_2 = P2^2;
+  31          sbit P2_3 = P2^3;
+  32          
+  33          
+  34          
+  35          
+  36          SEGMENT_DISPLAYER segmentDisplaysIndex = SEGMENT_DISPLAYER_1_ON;
+  37          
+  38          sbit lockerPin=P1^7;    //定义位选
+  39          
+  40          int timer;
+  41          
+  42          typedef enum{
+  43                  LOCK,
+  44                  UNLOCK
+  45          }LOCKER_STATUS;
+  46          
+  47          LOCKER_STATUS lockerStatus = LOCK;
+  48          
+  49          
+  50          
+  51          void userBusinessEventHandle()
+  52          {
+  53   1              uint8 i;
+  54   1              for(i=0;i<EVENT_NUMBER;i++)
+  55   1              {
+C51 COMPILER V9.00   BUSINESS                                                              05/05/2016 01:06:09 PAGE 2   
+
+  56   2                      if((getApp.eventEDable_t[i]==ENABLE)&&(getApp.eventResultFlag_t[i]==ENABLE)&&(getApp.eventDoCount_t[i]<g
+             -etApp.eventSetCount_t[i]))
+  57   2                      {
+  58   3                              userSystemSetEventDone(i);
+  59   3                              switch(getApp.eventId_t[i])
+  60   3                              {
+  61   4                                      case EVENT_UART_RECIVE:
+  62   4                                      {
+  63   5                                              uartSendStr(uartData);
+  64   5                                              dealLocker(uartData);
+  65   5                                              uartDataClean();
+  66   5                                              setEvent(EVENT_UART_RECIVE, ENABLE,20,1);
+  67   5                                      }
+  68   4                                      break;
+  69   4                                      case EVENT_LOCK_LOCKER:
+  70   4                                      {
+  71   5                                              lockerStatus = UNLOCK;
+  72   5                                              reportLockerStatus();
+  73   5                                              //uartSendStr("UNLOCK\r\n");
+  74   5                                      }
+  75   4                                      break;
+  76   4                                      case EVENT_LOCKER_STATUS_RSP:
+  77   4                                      {
+  78   5                                              reportLockerStatus();
+  79   5                                              setEvent(EVENT_LOCKER_STATUS_RSP, ENABLE,3000,1);
+  80   5                                      }
+  81   4                                      break;
+  82   4                                      /*锁倒计时*/
+  83   4                                      case EVENT_LOCKER_DAOJISHI:
+  84   4                                      {
+  85   5                                              
+  86   5                              
+  87   5      
+  88   5                                                      
+  89   5      
+  90   5                                              /*if(timer < -1)
+  91   5                                              {
+  92   5                                                      timer =LOCKER_TIMER;
+  93   5                                                      setEvent(EVENT_LOCKER_LOCKED, ENABLE,1,1);
+  94   5                                                      setEvent(EVENT_LOCKER_DAOJISHI, DISABLE,0,0);
+  95   5                                                      lockerStatus = LOCK;
+  96   5                                                      reportLockerStatus();
+  97   5                                              }
+  98   5                                              else
+  99   5                                              {                                       
+ 100   5                                                      uartSendStr("EVENT_LOCKER_DAOJISHI\r\n");
+ 101   5                                                      setEvent(EVENT_LOCKER_DAOJISHI, ENABLE,200,1);
+ 102   5                                                      lockerStatus = UNLOCK;
+ 103   5                                                      reportLockerStatus();                                           
+ 104   5                                              }*/
+ 105   5                                      }
+ 106   4                                      break;
+ 107   4                                      case EVENT_LOCKER_LOCKED:
+ 108   4      
+ 109   4                                              break;
+ 110   4                                      case EVENT_SEGMENT_DISPLAYER:
+ 111   4                                      {
+ 112   5                                              switch(segmentDisplaysIndex)
+ 113   5                                              {
+ 114   6                                                      case SEGMENT_DISPLAYER_1_ON:
+ 115   6                                                              P2_3 = 1;
+ 116   6                                                              P0=table[0];
+C51 COMPILER V9.00   BUSINESS                                                              05/05/2016 01:06:09 PAGE 3   
+
+ 117   6                                                              P2_0 = 0;
+ 118   6                                                              segmentDisplaysIndex = SEGMENT_DISPLAYER_2_ON;
+ 119   6                                                      break;
+ 120   6      
+ 121   6                                                      case SEGMENT_DISPLAYER_2_ON:
+ 122   6                                                              P2_0 = 1;
+ 123   6                                                              P0=table[1];
+ 124   6                                                              P2_1 = 0;
+ 125   6                                                              segmentDisplaysIndex = SEGMENT_DISPLAYER_3_ON;
+ 126   6                                                      break;
+ 127   6                                                      case SEGMENT_DISPLAYER_3_ON:
+ 128   6                                                              P2_1 = 1;
+ 129   6                                                              P0=table[2];
+ 130   6                                                              P2_2 = 0;
+ 131   6                                                              segmentDisplaysIndex = SEGMENT_DISPLAYER_4_ON;
+ 132   6                                                      break;
+ 133   6                                                      case SEGMENT_DISPLAYER_4_ON:
+ 134   6                                                              P2_2 = 1;
+ 135   6                                                              P0=table[3];
+ 136   6                                                              P2_3 = 0;
+ 137   6                                                              segmentDisplaysIndex = SEGMENT_DISPLAYER_1_ON;
+ 138   6                                                      break;          
+ 139   6                                              }
+ 140   5                                              setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
+ 141   5                                      }
+ 142   4                                              //uartSendStr("EVENT_SEGMENT_DISPLAYER\r\n");
+ 143   4                                              /*P0=table[i];
+ 144   4                                              P2_0 = 0;*/
+ 145   4                                              //dealSegmentDisplays();
+ 146   4                                              //setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
+ 147   4                                              break;
+ 148   4                                      default:
+ 149   4                                              break;
+ 150   4                              
+ 151   4                              }
+ 152   3                      }
+ 153   2                      else if((getApp.eventEDable_t[i]==ENABLE)&&(getApp.eventDoCount_t[i]>=getApp.eventSetCount_t[i]))
+ 154   2                      {
+ 155   3                              getApp.eventEDable_t[i]=DISABLE;
+ 156   3                      }
+ 157   2              }
+ 158   1      }
+ 159          
+ 160          void dealLocker(uint8 *cmd)
+ 161          {
+ 162   1              if(uartIndex < 5 ) return;
+ 163   1              if(uartIndex == 0) return;
+ 164   1              
+ 165   1              if((cmd[0] == 'U')&&(cmd[1] == 'N')&&cmd[2] == 'L'&&cmd[3] == 'O'&&cmd[4] == 'C'&&cmd[5] == 'K'){
+ 166   2                      lockerPin = 1;
+ 167   2                      timer = LOCKER_TIMER;
+ 168   2                      uartSendStr("open locker 5s\r\n");
+ 169   2                      lockerStatus = UNLOCK;
+ 170   2                      reportLockerStatus();
+ 171   2                      //setEvent(EVENT_LOCK_LOCKER, ENABLE,500,1);
+ 172   2                      setEvent(EVENT_LOCKER_DAOJISHI, ENABLE,1,1);
+ 173   2              }
+ 174   1              if((cmd[0] == 'T')&&(cmd[1] == 'O')&&cmd[2] == 'L'&&cmd[3] == 'O'&&cmd[4] == 'C'&&cmd[5] == 'K'){
+ 175   2      
+ 176   2                      timer = 0;
+ 177   2                      lockerStatus = LOCK;
+ 178   2                      reportLockerStatus();
+C51 COMPILER V9.00   BUSINESS                                                              05/05/2016 01:06:09 PAGE 4   
+
+ 179   2                      setEvent(EVENT_LOCKER_LOCKED, ENABLE,1,1);
+ 180   2                      setEvent(EVENT_LOCKER_DAOJISHI, DISABLE,0,0);
+ 181   2              }
+ 182   1      }
+ 183          void reportLockerStatus()
+ 184          {
+ 185   1              if(lockerStatus == UNLOCK)
+ 186   1              {
+ 187   2                      lockerPin = 1;
+ 188   2                      //uartSendStr("unlock\r\n");
+ 189   2              }
+ 190   1              else
+ 191   1              {
+ 192   2                      lockerPin = 0;
+ 193   2                      //uartSendStr("lock\r\n");
+ 194   2              }
+ 195   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    498    ----
+   CONSTANT SIZE    =     27    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

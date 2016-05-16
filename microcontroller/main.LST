@@ -1,0 +1,122 @@
+C51 COMPILER V9.00   MAIN                                                                  05/05/2016 01:06:09 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>         //此文件中定义了52的一些特殊功能寄存器
+   2          #include "timer.h"
+   3          #include "uart.h"
+   4          #include "user_sys.h"
+   5          #include "phy.h"
+   6          #include "business.h"
+   7          #include "1602.h"
+   8          #include "DHT11.h"
+   9          
+  10          extern xdata uint8  U8T_data_H,U8T_data_L,U8RH_data_H,U8RH_data_L,U8checkdata;
+  11          
+  12          /*
+  13          sbit P2_0 = P2^0;
+  14          sbit P2_1 = P2^1;
+  15          sbit P2_2 = P2^2;
+  16          sbit P2_3 = P2^3;*/
+  17          
+  18          //uint8 code table[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+  19          
+  20          uint8 code dis1[]={"QXMCU"};
+  21          uint8 code dis2[]={"HTTP://QXMCU.COM"};
+  22          
+  23          sbit lockerPin=P1^7;    //定义位选
+  24          
+  25          void delayms(int i)
+  26          {
+  27   1        int j,k; 
+  28   1        for(j=i;j>0;j--)
+  29   1          for(k=125;k>0;k--);
+  30   1      }
+  31          
+  32          void init()
+  33          {
+  34   1      
+  35   1              lockerPin = 0;
+  36   1              
+  37   1              Init_Timer0();
+  38   1      
+  39   1              InitUART(B57600);       
+  40   1              //uartSendStr("int..\r\n");
+  41   1              //Init_Timer0();
+  42   1      //      TIM2Inital();
+  43   1      
+  44   1              userSystemEventInit();          
+  45   1              //uartSendStr("int end...\r\n");        
+  46   1              lcd_init();
+  47   1      }
+  48          void main()
+  49          { 
+  50   1              int i;
+  51   1              init();
+  52   1      
+  53   1              
+  54   1              //LED1  = 0; //置P1_7口为低电平 ,点亮LED
+  55   1                      
+C51 COMPILER V9.00   MAIN                                                                  05/05/2016 01:06:09 PAGE 2   
+
+  56   1              setEvent(EVENT_UART_RECIVE, ENABLE,30,1);
+  57   1              setEvent(EVENT_LOCKER_STATUS_RSP, ENABLE,300,1);
+  58   1              setEvent(EVENT_LOCKER_LOCKED, ENABLE,1,1);
+  59   1              
+  60   1              //setEvent(EVENT_SEGMENT_DISPLAYER, ENABLE,1,1);
+  61   1              uartDataClean();        
+  62   1      
+  63   1              while (dis1 [i]!='\0')
+  64   1              {
+  65   2                      lcd_wdat (dis1 [i]);
+  66   2                      i++;    
+  67   2              } 
+  68   1      
+  69   1              lcd_pos (0x40);
+  70   1              i=0;
+  71   1              while (dis2 [i]!='\0')
+  72   1              {
+  73   2                      lcd_wdat (dis2 [i]);
+  74   2                      i++;    
+  75   2              } 
+  76   1              //uartSendStr("LCD \r\n");      
+  77   1              dealWHISU();
+  78   1              uartSendByte(U8T_data_H);       
+  79   1              uartSendByte(U8T_data_L);       
+  80   1              uartSendByte(U8RH_data_H);      
+  81   1              uartSendByte(U8RH_data_L);      
+  82   1              while(1)
+  83   1              {
+  84   2                      /*for(i=0;i<10;i++)       
+  85   2                      {
+  86   2                       P0=table[i];
+  87   2                         P2_0 = 0;
+  88   2                         delayms(5);
+  89   2                         //P2_0 = 1;
+  90   2                         delayms(10000);
+  91   2                      }        */
+  92   2                      userBusinessEventHandle();
+  93   2      
+  94   2              }
+  95   1      }
+  96          
+  97          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    206    ----
+   CONSTANT SIZE    =     23    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

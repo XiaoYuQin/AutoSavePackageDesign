@@ -1,0 +1,118 @@
+C51 COMPILER V9.00   1602                                                                  05/05/2016 01:06:09 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE 1602
+OBJECT MODULE PLACED IN 1602.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 1602.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>      
+   2          #include "1602.h"
+   3          #include <intrins.h>
+   4          
+   5          
+   6          sbit rs=P0^7;
+   7          sbit rw=P0^6;
+   8          sbit ep=P0^5;
+   9          
+  10          
+  11          
+  12          void delay (int m)
+  13          {
+  14   1              unsigned char i,j;
+  15   1              for (i=0;i<m;i++)
+  16   1              for (j=0;j<253;j++);
+  17   1      }
+  18          
+  19          bool lcd_bz()
+  20          {
+  21   1              bool result;
+  22   1              rs=0;           // ?ив?|D?o?
+  23   1              rw=1;
+  24   1              ep=1;
+  25   1              _nop_();
+  26   1              _nop_();
+  27   1              _nop_();
+  28   1              _nop_();
+  29   1              result = (bool)(P2&0x80);
+  30   1              ep=0;
+  31   1              return result;
+  32   1      }
+  33          
+  34          void lcd_wcmd (uint8 cmd)
+  35          {
+  36   1              while (lcd_bz());
+  37   1              rs=0;
+  38   1              rw=0;
+  39   1              ep=0;
+  40   1              _nop_();
+  41   1              _nop_();
+  42   1              P2=cmd ;
+  43   1              _nop_();
+  44   1              _nop_();
+  45   1              _nop_();
+  46   1              _nop_();
+  47   1              ep=1;
+  48   1              _nop_();
+  49   1              _nop_();
+  50   1              _nop_();
+  51   1              _nop_();
+  52   1              ep=0;
+  53   1      }
+  54          
+  55          void lcd_pos (uint8 pos)
+C51 COMPILER V9.00   1602                                                                  05/05/2016 01:06:09 PAGE 2   
+
+  56          {
+  57   1              lcd_wcmd (pos|0x80);
+  58   1      }
+  59          
+  60          void lcd_wdat (uint8 dat)
+  61          {
+  62   1              while (lcd_bz());
+  63   1              rs=1;
+  64   1              rw=0;
+  65   1              ep=0;
+  66   1              _nop_();
+  67   1              _nop_();
+  68   1              P2=dat ;
+  69   1              _nop_();
+  70   1              _nop_();
+  71   1              _nop_();
+  72   1              _nop_();
+  73   1              ep=1;
+  74   1              _nop_();
+  75   1              _nop_();
+  76   1              _nop_();
+  77   1              _nop_();
+  78   1              ep=0;
+  79   1      }
+  80          
+  81          void lcd_init ()
+  82          {
+  83   1              lcd_wcmd (0x38);
+  84   1              delay (1);
+  85   1              lcd_wcmd (0x0c);
+  86   1              delay (1);
+  87   1              lcd_wcmd (0x06);
+  88   1              delay (1);
+  89   1              lcd_wcmd (0x01);
+  90   1              delay (1);
+  91   1              delay (10);
+  92   1              lcd_pos (0);
+  93   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    146    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
